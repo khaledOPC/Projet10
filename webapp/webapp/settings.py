@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+ENV = os.getenv('ENV', 'development')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,9 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h*4*(o0%zrdjf$lj00e3ieph^"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+if ENV == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ["46.101.83.16"]
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "webpage",
     "users",
+    "webapp",
 ]
 
 MIDDLEWARE = [
@@ -75,20 +82,29 @@ WSGI_APPLICATION = "webapp.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+if ENV == 'production':
+    DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'p10db',
+                'USER': 'p10user',
+                'PASSWORD': 'P10MDP',
+                'HOST': 'localhost',
+                'PORT': '5432'
+                }
+            }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'projet10db',
-        'USER': 'postgres',
-        'PASSWORD': 'Khaledmehdi92',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+else:
+    DATABASES = {
+            'default' : {
+                'ENGINE' : 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / "db.sqlite3",
+                }
+            }
 
 
-# Password validation
+
+#Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -122,9 +138,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 LOGIN_REDIRECT_URL = 'home'
+
+
+if ENV == 'production':
+    STATIC_URL = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+else:
+    STATIC_URL = "static/"
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+
+
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

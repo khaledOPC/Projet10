@@ -20,11 +20,6 @@ __pycache__/
 *.swp
 *.swo
 
-# Django migrations
-**/migrations/
-*.mo
-*.pot
-
 # Fichiers de test, de build et d'installation
 build/
 dist/
@@ -38,12 +33,7 @@ htmlcov/
 # Pytest cache
 .pytest_cache/
 
-# Fichiers statiques compilés
-staticfiles/
-static/
 
 # Selenium / WebDriver Manager cache
 .wdm/
 
-# Autres
-*.log
