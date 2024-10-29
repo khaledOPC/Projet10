@@ -23,17 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h*4*(o0%zrdjf$lj00e3ieph^"
+
+#SECRET_KEY = "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h*4*(o0%zrdjf$lj00e3ieph^"
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h*4*(o0%zrdjf$lj00e3ieph^")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-if ENV == 'production':
-    DEBUG = False
-    ALLOWED_HOSTS = ["46.101.83.16"]
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = []
-
+DEBUG = False 
+ALLOWED_HOSTS = ["46.101.83.16"] #IP ou Domaine selon projet
 
 # Application definition
 
@@ -141,13 +137,17 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = 'home'
 
+STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+        ]
 
-if ENV == 'production':
-    STATIC_URL = "/static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-else:
-    STATIC_URL = "static/"
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# Configuration fichier static selon prodcution ou developpement
+
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = "static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 
