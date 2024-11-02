@@ -4,18 +4,22 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.9.13
-    working_directory: ~/repo
+    working_directory: ~/repo/Projet10/webapp
     steps:
-      - checkout
+      - checkout  # Clone le code source depuis le dépôt GitHub
+
+      # Installation des dépendances nécessaires
       - run:
           name: Install Dependencies
           command: |
             python -m venv venv
             . venv/bin/activate
             pip install --upgrade pip
-            pip install -r requirements.txt
+            pip install -r ../requirements.txt
             python -m pip install webdriver-manager --upgrade
             python -m pip install packaging
+
+      # Installation de Google Chrome pour les tests Selenium
       - run:
           name: Install Specific Stable Chrome Version
           command: |
@@ -25,24 +29,34 @@ jobs:
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
+
+      # Vérification de la version installée de Chrome
       - run:
           name: Verify Chrome Version
           command: google-chrome --version
+
+      # Configuration de Django
       - run:
           name: Setup Django
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=webapp.settings
+
+      # Exécution des migrations de la base de données
       - run:
           name: Run Migrations
           command: |
             . venv/bin/activate
             python manage.py migrate
+
+      # Installation de pytest pour les tests
       - run:
           name: Install pytest
           command: |
             . venv/bin/activate
             pip install pytest
+
+      # Lancement des tests
       - run:
           name: Run Tests
           command: |
