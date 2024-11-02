@@ -1,0 +1,57 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.9.13
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            python -m venv venv
+            . venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            python -m pip install webdriver-manager --upgrade
+            python -m pip install packaging
+      - run:
+          name: Install Specific Stable Chrome Version
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y wget unzip
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
+      - run:
+          name: Verify Chrome Version
+          command: google-chrome --version
+      - run:
+          name: Setup Django
+          command: |
+            . venv/bin/activate
+            export DJANGO_SETTINGS_MODULE=webapp.settings
+      - run:
+          name: Run Migrations
+          command: |
+            . venv/bin/activate
+            python manage.py migrate
+      - run:
+          name: Install pytest
+          command: |
+            . venv/bin/activate
+            pip install pytest
+      - run:
+          name: Run Tests
+          command: |
+            . venv/bin/activate
+            export DJANGO_SETTINGS_MODULE=webapp.settings
+            pytest --maxfail=3 --disable-warnings -v
+
+workflows:
+  version: 2
+  all_jobs:
+    jobs:
+      - build-and-test
