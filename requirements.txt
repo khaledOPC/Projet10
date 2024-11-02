@@ -11,3 +11,4 @@ pytest-django
 packaging
 psycopg2
 psycopg2-binary
+sentry-sdk
