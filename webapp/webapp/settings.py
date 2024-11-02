@@ -12,6 +12,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://f49d0ec93dc80793ba7e544d83dde974@o4508229866881024.ingest.de.sentry.io/4508229967282256",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    _experiments={
+        "continuous_profiling_auto_start": True,
+    },
+)
 
 ENV = os.getenv('ENV', 'development')
 
