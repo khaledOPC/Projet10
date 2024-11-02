@@ -3,8 +3,8 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python:3.9.13
-    working_directory: ~/repo
+      - image: cimg/python:3.12.7
+    working_directory: ~/repo/Projet10
     steps:
       - checkout  # Clone le code source depuis le dépôt GitHub
 
