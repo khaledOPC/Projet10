@@ -4,7 +4,7 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.12.7
-    working_directory: ~/repo/Projet10  # Définit le répertoire principal du projet
+    working_directory: ~/repo
     steps:
       - checkout  # Clone le code source depuis le dépôt GitHub
 
@@ -41,13 +41,14 @@ jobs:
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=webapp.settings
+            export PYTHONPATH=$PYTHONPATH:~/repo/Projet10/webapp  # Ajoute webapp au chemin Python
 
       # Exécution des migrations de la base de données
       - run:
           name: Run Migrations
           command: |
             . venv/bin/activate
-            python webapp/manage.py migrate
+            python Projet10/webapp/manage.py migrate
 
       # Installation de pytest pour les tests
       - run:
@@ -62,7 +63,8 @@ jobs:
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=webapp.settings
-            pytest --maxfail=3 --disable-warnings -v
+            export PYTHONPATH=$PYTHONPATH:~/repo/Projet10/webapp
+            pytest Projet10/webapp/tests --maxfail=3 --disable-warnings -v  # Spécifie le dossier de tests
 
 workflows:
   version: 2
