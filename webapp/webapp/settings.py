@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
 ALLOWED_HOSTS = ["46.101.83.16"] #IP ou Domaine selon projet
-
+#test 
 # Application definition
 
 INSTALLED_APPS = [
