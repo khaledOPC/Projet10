@@ -41,7 +41,7 @@ jobs:
           command: |
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=webapp.settings
-            export PYTHONPATH=$PYTHONPATH:~/repo/Projet10/webapp  # Ajoute webapp au chemin Python
+            export PYTHONPATH=$PYTHONPATH:~/repo/Projet10/webapp
 
       # Exécution des migrations de la base de données
       - run:
@@ -64,7 +64,7 @@ jobs:
             . venv/bin/activate
             export DJANGO_SETTINGS_MODULE=webapp.settings
             export PYTHONPATH=$PYTHONPATH:~/repo/Projet10/webapp
-            pytest Projet10/webapp/tests --maxfail=3 --disable-warnings -v  # Spécifie le dossier de tests
+            pytest webapp/users/tests --maxfail=3 --disable-warnings -v  # Chemin modifié vers users/tests
 
 workflows:
   version: 2
