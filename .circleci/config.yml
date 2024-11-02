@@ -4,7 +4,7 @@ jobs:
   build-and-test:
     docker:
       - image: cimg/python:3.12.7
-    working_directory: ~/repo/Projet10
+    working_directory: ~/repo/Projet10  # Définit le répertoire principal du projet
     steps:
       - checkout  # Clone le code source depuis le dépôt GitHub
 
@@ -47,7 +47,7 @@ jobs:
           name: Run Migrations
           command: |
             . venv/bin/activate
-            python manage.py migrate
+            python webapp/manage.py migrate
 
       # Installation de pytest pour les tests
       - run:
