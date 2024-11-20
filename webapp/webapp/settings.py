@@ -39,9 +39,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-628i1k42^1r5z@0y(qjqi(w3-h*4*(o0%zrdjf$lj00e3ieph^")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
-ALLOWED_HOSTS = ["46.101.83.16"] #IP ou Domaine selon projet
-#test 
+
+#if ENV == 'production':
+if ENV == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ['46.101.83.16']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = [] #IP ou Domaine selon projet
+ 
 # Application definition
 
 INSTALLED_APPS = [
@@ -94,8 +100,8 @@ if ENV == 'production':
             'default': {
                 'ENGINE': 'django.db.backends.postgresql_psycopg2',
                 'NAME': 'p10db',
-                'USER': 'p10user',
-                'PASSWORD': 'P10MDP',
+                'USER': os.getenv('DATABASE_USER'),
+                'PASSWORD': os.getenv('DATABASE_PASSWORD'),
                 'HOST': 'localhost',
                 'PORT': '5432'
                 }
